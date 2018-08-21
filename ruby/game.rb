@@ -8,6 +8,8 @@ class Game
   def start_game
     # start by printing the board
     puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
+    # -----
+    # The above line and the matching line in the until loop below should be abstracted into their own method to DRY up the code
     puts "Enter [0-8]:"
     # loop through until the game was won or tied
     until game_is_over(@board) || tie(@board)
@@ -18,16 +20,23 @@ class Game
       puts " #{@board[0]} | #{@board[1]} | #{@board[2]} \n===+===+===\n #{@board[3]} | #{@board[4]} | #{@board[5]} \n===+===+===\n #{@board[6]} | #{@board[7]} | #{@board[8]} \n"
     end
     puts "Game over"
+    # -----
+    # From a UI standpoint, adding logic to determine the winner and telling the user the outcome would be a good addition.
   end
 
   def get_human_spot
     spot = nil
     until spot
       spot = gets.chomp.to_i
+      # ---------
+      # If the user inputs a number outside 0 to 9, there is no error and the computer plays their move without a human move
+      # Adding some validation here to prevent entry outside the 0 to 9 range would be good
       if @board[spot] != "X" && @board[spot] != "O"
         @board[spot] = @hum
       else
         spot = nil
+        # -----------
+        # Giving an error message here to tell the user they've chosen an invalid spot would be a good addition
       end
     end
   end
@@ -52,6 +61,8 @@ class Game
   def get_best_move(board, next_player, depth = 0, best_score = {})
     available_spaces = []
     best_move = nil
+    # ----
+    # In this block and the block below it, naming the block variables as 'space' and 'available_space' would be more future readable
     board.each do |s|
       if s != "X" && s != "O"
         available_spaces << s
